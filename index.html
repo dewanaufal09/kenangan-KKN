@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Kenangan KKN – Perpisahan Penuh Cinta</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Dancing+Script:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+      :root {
+        --bg: #fff5e6;
+        --card: #fffaf0;
+        --soft: #ffe4cc;
+        --txt: #3c2f2f;
+        --muted: #7a6c5d;
+        --pri: #ff8c6b;
+        --acc: #ffd700;
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        -webkit-tap-highlight-color: transparent;
+      }
+      body {
+        background: linear-gradient(135deg, #fff5e6 0%, #ffe4cc 100%);
+        color: var(--txt);
+        font-family: "Poppins", sans-serif;
+        overflow-x: hidden;
+      }
+      .wrap {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 16px;
+      }
+      .card {
+        width: 100%;
+        max-width: 980px;
+        background: var(--card);
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        border-radius: 24px;
+        padding: 20px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+      }
+      .title {
+        font-family: "Dancing Script", cursive;
+        font-weight: 700;
+        margin: 0 0 8px;
+        font-size: clamp(24px, 5vw, 28px);
+        text-align: center;
+        color: var(--pri);
+      }
+      .subtitle {
+        color: var(--muted);
+        margin: 0 0 16px;
+        font-size: clamp(13px, 3vw, 15px);
+        text-align: center;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+      @media (min-width: 768px) {
+        .grid {
+          grid-template-columns: 1.35fr 1fr;
+        }
+      }
+
+      /* Hero */
+      .hero {
+        position: relative;
+        border-radius: 18px;
+        background: linear-gradient(120deg, var(--soft), var(--card));
+        padding: 20px;
+        min-height: 260px;
+        overflow: hidden;
+        border: 2px solid var(--acc);
+      }
+      .hero h1 {
+        font-family: "Dancing Script", cursive;
+        font-size: clamp(26px, 5.5vw, 32px);
+        line-height: 1.15;
+        margin: 0 0 8px;
+        text-align: center;
+        color: var(--pri);
+      }
+      .hero p {
+        margin: 0;
+        color: var(--muted);
+        font-size: clamp(13px, 2.8vw, 15px);
+        text-align: center;
+      }
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 12px;
+        border-radius: 999px;
+        background: rgba(255, 140, 107, 0.1);
+        border: 1px solid var(--acc);
+        font-size: clamp(12px, 2.5vw, 14px);
+        color: var(--pri);
+        margin: 0 auto 14px;
+      }
+
+      /* Audio bar */
+      .audio-bar {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        background: rgba(255, 140, 107, 0.1);
+        border: 1px solid var(--acc);
+        padding: 10px 14px;
+        border-radius: 14px;
+        margin: 16px auto 0;
+        max-width: 300px;
+        justify-content: center;
+      }
+      .btn {
+        border-radius: 12px;
+        padding: 6px 12px;
+        cursor: pointer;
+        font-size: clamp(13px, 2.5vw, 14px);
+        transition: transform 0.2s, background 0.2s;
+      }
+      .btn:hover {
+        transform: scale(1.05);
+      }
+      .btn:active {
+        transform: scale(0.95);
+      }
+      .btn-pri {
+        background: var(--pri);
+        border: none;
+        color: #fff;
+      }
+      .btn-ghost {
+        background: transparent;
+        border: 1px solid var(--acc);
+        color: var(--pri);
+      }
+
+      /* Messages */
+      .panel {
+        background: rgba(255, 228, 204, 0.3);
+        border: 1px solid var(--acc);
+        border-radius: 16px;
+        padding: 16px;
+        max-height: 400px;
+        overflow-y: auto;
+      }
+      .panel::-webkit-scrollbar {
+        width: 6px;
+      }
+      .panel::-webkit-scrollbar-thumb {
+        background: var(--muted);
+        border-radius: 3px;
+      }
+      .msg {
+        background: var(--card);
+        border: 1px solid var(--acc);
+        border-radius: 14px;
+        padding: 14px;
+        margin: 10px 0;
+        font-size: clamp(13px, 2.5vw, 14px);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      }
+      .msg h4 {
+        margin: 0 0 6px;
+        font-weight: 600;
+        color: var(--pri);
+      }
+      .muted {
+        color: var(--muted);
+        font-size: clamp(13px, 2.5vw, 14px);
+      }
+
+      /* Gallery */
+      .gallery {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+        padding: 12px;
+        border: 2px solid var(--acc);
+        border-radius: 12px;
+        background: rgba(255, 228, 204, 0.2);
+      }
+      .gallery-item {
+        flex: 0 0 calc(33.33% - 8px);
+        max-width: 120px;
+        aspect-ratio: 1/1;
+        border: 4px solid #fff;
+        border-bottom-width: 20px;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        transition: transform 0.3s, box-shadow 0.3s;
+        cursor: pointer;
+        background: #fff;
+      }
+      .gallery-item:hover {
+        transform: scale(1.05);
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+      }
+      .gallery-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      @media (min-width: 600px) {
+        .gallery-item {
+          flex: 0 0 calc(25% - 8px);
+          max-width: 140px;
+        }
+      }
+      @media (min-width: 900px) {
+        .gallery-item {
+          flex: 0 0 calc(20% - 8px);
+          max-width: 160px;
+        }
+      }
+
+      /* Photo View Modal */
+      .modal {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.9);
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+        padding: 12px;
+      }
+      .modal-content {
+        max-width: 90%;
+        max-height: 85vh;
+        border-radius: 12px;
+        overflow: hidden;
+        position: relative;
+        background: #fff;
+        padding: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      }
+      .modal-content img {
+        width: 10%;
+        height: auto;
+        max-height: 75vh;
+        object-fit: contain;
+        border-radius: 8px;
+        border: 2px solid var(--acc);
+      }
+      .modal-close {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        background: var(--pri);
+        color: #fff;
+        border: none;
+        border-radius: 50%;
+        width: 28px;
+        height: 28px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        font-size: 14px;
+        transition: transform 0.2s;
+      }
+      .modal-close:hover {
+        transform: scale(1.1);
+      }
+      .modal-close:active {
+        transform: scale(0.9);
+      }
+      .modal-nav {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: var(--pri);
+        color: #fff;
+        border: none;
+        border-radius: 50%;
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        font-size: 18px;
+        transition: transform 0.2s;
+      }
+      .modal-nav:hover {
+        transform: translateY(-50%) scale(1.1);
+      }
+      .modal-nav:active {
+        transform: translateY(-50%) scale(0.9);
+      }
+      .modal-prev {
+        left: 8px;
+      }
+      .modal-next {
+        right: 8px;
+      }
+
+      /* Camera Modal */
+      .camera-modal {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.9);
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+        padding: 12px;
+        flex-direction: column;
+      }
+      .camera-container {
+        position: relative;
+        width: 100%;
+        max-width: 500px;
+        margin: 0 auto;
+        border: 10px solid #fff;
+        border-radius: 15px;
+        box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+        background: linear-gradient(135deg, var(--pri) 0%, var(--acc) 100%);
+        padding: 20px;
+      }
+      #camera-preview {
+        width: 100%;
+        display: block;
+        border-radius: 10px;
+        border: 2px solid #fff;
+      }
+      #camera-overlay {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        right: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        color: #fff;
+        font-family: "Dancing Script", cursive;
+        font-size: clamp(1.2rem, 4vw, 1.8rem);
+        font-weight: 700;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+        pointer-events: none;
+      }
+      #camera-overlay::before {
+        content: "🌸 KKN 05 KALIABU 💖";
+      }
+      #camera-overlay::after {
+        content: "✨";
+      }
+      #camera-overlay-bottom {
+        position: absolute;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        color: #fff;
+        font-family: "Dancing Script", cursive;
+        font-size: clamp(1.2rem, 4vw, 1.8rem);
+        font-weight: 700;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+        pointer-events: none;
+        white-space: nowrap;
+      }
+      #capture-photo {
+        margin-top: 20px;
+        padding: 10px 20px;
+        background: var(--pri);
+        color: #fff;
+        border: none;
+        border-radius: 12px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: transform 0.2s;
+      }
+      #capture-photo:hover {
+        transform: scale(1.05);
+      }
+      #camera-canvas {
+        display: none;
+      }
+
+      /* Footer */
+      .footer {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 16px;
+        color: var(--muted);
+        font-size: clamp(11px, 2.2vw, 13px);
+        gap: 10px;
+      }
+      .footer span {
+        flex: 1;
+        text-align: center;
+      }
+
+      /* Falling petals */
+      .petals {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+        pointer-events: none;
+      }
+      .petals span {
+        position: absolute;
+        top: -20px;
+        font-size: clamp(16px, 3vw, 20px);
+        opacity: 0.8;
+        animation: fall 10s linear infinite;
+      }
+      @keyframes fall {
+        0% {
+          transform: translateY(-20px) rotate(0deg);
+          opacity: 0.8;
+        }
+        100% {
+          transform: translateY(120vh) rotate(720deg);
+          opacity: 0.2;
+        }
+      }
+
+      /* Responsive adjustments */
+      @media (max-width: 600px) {
+        .card {
+          padding: 14px;
+        }
+        .hero {
+          padding: 16px;
+          min-height: 220px;
+        }
+        .hero h1 {
+          font-size: 22px;
+        }
+        .hero p,
+        .msg,
+        .subtitle {
+          font-size: 13px;
+        }
+        .btn {
+          padding: 5px 10px;
+          font-size: 13px;
+        }
+        .gallery-item {
+          flex: 0 0 calc(50% - 8px);
+          max-width: 110px;
+        }
+        #camera-overlay {
+          font-size: clamp(1rem, 3.5vw, 1.5rem);
+        }
+        #camera-overlay-bottom {
+          font-size: clamp(1rem, 3.5vw, 1.5rem);
+        }
+      }
+      @media (max-width: 400px) {
+        .hero h1 {
+          font-size: 20px;
+        }
+        .hero p,
+        .msg,
+        .subtitle {
+          font-size: 12px;
+        }
+        .btn {
+          padding: 4px 8px;
+          font-size: 12px;
+        }
+        .gallery-item {
+          max-width: 100px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <audio id="myAudio" autoplay>
+      <source src="./music/Instrumental_Piano_Soft.mp3" type="audio/mpeg" />
+    </audio>
+
+    <div class="wrap">
+      <div class="card">
+        <div class="grid">
+          <!-- Left: Hero -->
+          <section class="hero">
+            <div class="pill">🌸 Kenangan KKN • Instrumental Piano</div>
+            <h1>Untuk Keluarga KKN 05 Kaliabu</h1>
+            <p>
+              Terima kasih atas setiap tawa, air mata, dan kenangan indah.
+              Maafkan segala kekuranganku. Kalian akan selalu di hatiku. 💖
+            </p>
+            <div class="audio-bar">
+              <button id="btnPlay" class="btn btn-pri">▶️ Putar</button>
+              <button id="btnPause" class="btn btn-ghost" disabled>
+                ⏸️ Jeda
+              </button>
+            </div>
+            <div style="margin-top: 14px; text-align: center" class="muted">
+              Menuju purna KKN: <span id="countdown"></span>
+            </div>
+            <div class="petals"></div>
+          </section>
+
+          <!-- Right: Notes -->
+          <section>
+            <h3 class="title">Catatan dari Hati</h3>
+            <p class="subtitle">
+              Bacalah perlahan, sambil mengenang momen kita bersama.
+            </p>
+            <div class="panel">
+              <div class="msg">
+                <p>
+                  Tak terasa waktu berlalu begitu cepat, dan kini kita berdiri
+                  di ujung perjalanan KKN ini. Rasanya seperti baru kemarin kita
+                  saling berkenalan, penuh tawa canggung dan cerita baru. Hari
+                  demi hari, kita menjalin ikatan yang tak hanya sekadar teman,
+                  tapi keluarga yang saling menguatkan.
+                </p>
+                <p>
+                  Bersama, kita telah melewati tawa riang, lelah di bawah terik
+                  matahari, rapat hingga larut malam, dan momen-momen kecil yang
+                  kini jadi kenangan berharga. Setiap canda, setiap tantangan,
+                  dan setiap kebersamaan telah menorehkan cerita yang akan
+                  selalu hidup di hati.
+                </p>
+                <p>
+                  Aku tahu, selama perjalanan ini pasti ada kata atau sikapku
+                  yang mungkin menyakiti. Dari lubuk hati, aku memohon maaf atas
+                  segala kekhilafan. Aku hanya ingin kita menyimpan kenangan
+                  indah tanpa beban di hati.
+                </p>
+                <p>
+                  Kalian adalah anugerah dalam bab hidupku ini. Persahabatan
+                  kita adalah harta yang tak ternilai, dan aku percaya, meski
+                  KKN ini berakhir, cerita kita akan terus berlanjut. Suatu
+                  saat, kita akan bertemu lagi, berbagi tawa dan mengenang
+                  masa-masa indah ini.
+                </p>
+                <p>
+                  Mari kita isi sisa waktu ini dengan kenangan terbaik. Buat
+                  cerita baru, tangkap setiap momen, dan simpan erat di hati.
+                  Terima kasih telah menjadi bagian dari hidupku. Kalian
+                  istimewa, dan aku tak akan pernah melupakan kalian.
+                </p>
+              </div>
+            </div>
+            <!-- Galeri-->
+            <h3 class="title" style="margin-top: 18px">Bingkai Kenangan</h3>
+            <p class="subtitle">Potret kebersamaan kita yang tak terlupa</p>
+            <div class="gallery">
+              <div class="gallery-item">
+                <img src="img/foto 1 .jpg" alt="KKN 1" />
+              </div>
+              <div class="gallery-item">
+                <img src="img/foto 2 .jpg" alt="KKN 2" />
+              </div>
+              <div class="gallery-item">
+                <img src="img/foto 3 .jpg" alt="KKN 3" />
+              </div>
+              <div class="gallery-item">
+                <img src="img/foto 4 .jpg" alt="KKN 4" />
+              </div>
+              <div class="gallery-item">
+                <img src="img/foto 5 .jpg" alt="KKN 5" />
+              </div>
+              <div class="gallery-item">
+                <img src="img/foto 6 .jpg" alt="KKN 6" />
+              </div>
+              <div class="gallery-item">
+                <img src="img/foto 7 .jpg" alt="KKN 7" />
+              </div>
+              <div class="gallery-item">
+                <img src="img/foto 8.jpg" alt="KKN 8" />
+              </div>
+              <div class="gallery-item">
+                <img src="img/foto 9 .jpg" alt="KKN 9" />
+              </div>
+              <div class="gallery-item">
+                <img src="img/foto 10.jpg" alt="KKN 10" />
+              </div>
+              <div class="gallery-item">
+                <img src="img/foto 11 .jpg" alt="KKN 11" />
+              </div>
+              <div class="gallery-item">
+                <img src="img/foto 12.jpg" alt="KKN 12" />
+              </div>
+              <div class="gallery-item">
+                <img src="img/foto 13 .jpg" alt="KKN 13" />
+              </div>
+              <div class="gallery-item">
+                <img src="img/foto 14 .jpg" alt="KKN 14" />
+              </div>
+              <div class="gallery-item">
+                <img src="img/foto 15 .jpg" alt="KKN 15" />
+              </div>
+            </div>
+            <button
+              id="photo-box-btn"
+              class="btn btn-pri"
+              style="
+                margin-top: 16px;
+                display: block;
+                margin-left: auto;
+                margin-right: auto;
+              "
+            >
+              Tambah Kenangan (Ambil Foto)
+            </button>
+            <div class="footer">
+              <span>© Kelompok KKN–05 Kaliabu – Kenangan yang Abadi.</span>
+              <button id="btnSurat" class="btn btn-pri btn-sm">
+                Baca Surat Cinta
+              </button>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+
+    <!-- Photo View Modal -->
+    <div class="modal" id="photoModal">
+      <div class="modal-content">
+        <button class="modal-close" onclick="closeModal()">✕</button>
+        <button class="modal-nav modal-prev" onclick="prevImage()">❮</button>
+        <button class="modal-nav modal-next" onclick="nextImage()">❯</button>
+        <img id="modalImage" src="" alt="Full Image" />
+      </div>
+    </div>
+
+    <!-- Camera Modal -->
+    <div class="camera-modal" id="cameraModal">
+      <div class="camera-container">
+        <video id="camera-preview" autoplay webkit-playsinline></video>
+        <div id="camera-overlay"></div>
+        <div id="camera-overlay-bottom">Kenangan KKN 05 Kaliabu 💖</div>
+      </div>
+      <button id="capture-photo">Abadikan Momen</button>
+      <canvas id="camera-canvas"></canvas>
+    </div>
+
+    <script>
+      // Audio Control
+      const audio = document.getElementById("myAudio");
+      const btnPlay = document.getElementById("btnPlay");
+      const btnPause = document.getElementById("btnPause");
+      const startReff = 0;
+
+      audio.addEventListener("ended", () => {
+        audio.currentTime = startReff;
+        audio.play();
+      });
+
+      btnPlay.addEventListener("click", () => {
+        audio.currentTime = startReff;
+        audio.play();
+        btnPlay.disabled = true;
+        btnPause.disabled = false;
+      });
+
+      btnPause.addEventListener("click", () => {
+        audio.pause();
+        btnPause.disabled = true;
+        btnPlay.disabled = false;
+      });
+
+      // Countdown
+      const endDateStr = "2025-09-02";
+      function renderCountdown() {
+        const end = new Date(endDateStr + "T00:00:00");
+        const now = new Date();
+        const diff = end - now;
+        const el = document.getElementById("countdown");
+        if (diff <= 0) {
+          el.textContent = "Kenangan telah terukir!";
+          return;
+        }
+        const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+        el.textContent = `H-${d}`;
+      }
+      setInterval(renderCountdown, 1000);
+      renderCountdown();
+
+      // SweetAlert Surat
+      const suratText = `Keluarga KKN 05 Kaliabu yang kucintai,\n\nTerima kasih atas setiap momen yang kita ukir bersama: dari canda di sela kerja, peluh di bawah matahari, hingga cerita malam yang penuh tawa. Jika ada kata atau sikapku yang keliru, maafkan aku dari hati.\n\nKalian lebih dari sekadar teman—kalian adalah keluarga. Semoga ikatan ini tak pernah pudar, dan kita bertemu lagi di hari-hari bahagia. Kalian selamanya di hatiku. 💖`;
+
+      document.getElementById("btnSurat").addEventListener("click", () => {
+        Swal.fire({
+          title: "Surat Cinta untuk KKN 05",
+          text: suratText,
+          icon: "info",
+          confirmButtonText: "Terima kasih",
+          confirmButtonColor: "#ff8c6b",
+          background: "#fff5e6",
+          color: "#3c2f2f",
+          customClass: { popup: "rounded" },
+        });
+      });
+
+      // Falling Petals
+      const petalWrap = document.querySelector(".petals");
+      const PETALS = ["🌸", "🌷", "💖", "✨", "🍂"];
+      function addPetal() {
+        const sp = document.createElement("span");
+        sp.textContent = PETALS[Math.floor(Math.random() * PETALS.length)];
+        sp.style.left = Math.random() * 100 + "vw";
+        sp.style.animationDuration = 8 + Math.random() * 4 + "s";
+        sp.style.opacity = 0.6 + Math.random() * 0.4;
+        petalWrap.appendChild(sp);
+        setTimeout(() => sp.remove(), 10000);
+      }
+      setInterval(addPetal, 1000);
+
+      // Photo View Modal
+      const photoModal = document.getElementById("photoModal");
+      const modalImage = document.getElementById("modalImage");
+      let galleryItems = document.querySelectorAll(".gallery-item img");
+      let currentImageIndex = 0;
+
+      function updateGalleryItems() {
+        galleryItems = document.querySelectorAll(".gallery-item img");
+      }
+
+      galleryItems.forEach((item, index) => {
+        item.addEventListener("click", openPhotoModal(index));
+      });
+
+      function openPhotoModal(index) {
+        return () => {
+          currentImageIndex = index;
+          modalImage.src = galleryItems[currentImageIndex].src;
+          photoModal.style.display = "flex";
+          gsap.fromTo(
+            ".modal-content",
+            { scale: 0.8, opacity: 0 },
+            { scale: 1, opacity: 1, duration: 0.4, ease: "power2.out" }
+          );
+        };
+      }
+
+      function closeModal() {
+        gsap.to(".modal-content", {
+          scale: 0.8,
+          opacity: 0,
+          duration: 0.3,
+          ease: "power2.in",
+          onComplete: () => {
+            photoModal.style.display = "none";
+          },
+        });
+      }
+
+      function prevImage() {
+        currentImageIndex =
+          (currentImageIndex - 1 + galleryItems.length) % galleryItems.length;
+        modalImage.src = galleryItems[currentImageIndex].src;
+        gsap.fromTo(
+          "#modalImage",
+          { x: -50, opacity: 0 },
+          { x: 0, opacity: 1, duration: 0.3, ease: "power2.out" }
+        );
+      }
+
+      function nextImage() {
+        currentImageIndex = (currentImageIndex + 1) % galleryItems.length;
+        modalImage.src = galleryItems[currentImageIndex].src;
+        gsap.fromTo(
+          "#modalImage",
+          { x: 50, opacity: 0 },
+          { x: 0, opacity: 1, duration: 0.3, ease: "power2.out" }
+        );
+      }
+
+      photoModal.addEventListener("click", (e) => {
+        if (e.target === photoModal) closeModal();
+      });
+
+      // Camera Photo Box
+      const photoBoxBtn = document.getElementById("photo-box-btn");
+      const cameraModal = document.getElementById("cameraModal");
+      const cameraPreview = document.getElementById("camera-preview");
+      const capturePhotoBtn = document.getElementById("capture-photo");
+      const cameraCanvas = document.getElementById("camera-canvas");
+      const gallery = document.querySelector(".gallery");
+      let stream = null;
+
+      photoBoxBtn.addEventListener("click", () => {
+        cameraModal.style.display = "flex";
+        navigator.mediaDevices
+          .getUserMedia({ video: { facingMode: "user" } })
+          .then((mediaStream) => {
+            stream = mediaStream;
+            cameraPreview.srcObject = stream;
+          })
+          .catch((error) => {
+            console.error("Error accessing camera:", error);
+            Swal.fire({
+              title: "Error",
+              text: "Tidak bisa mengakses kamera. Pastikan izin diberikan dan gunakan HTTPS.",
+              icon: "error",
+              confirmButtonColor: "#ff8c6b",
+              background: "#fff5e6",
+              color: "#3c2f2f",
+            });
+            closeCameraModal();
+          });
+      });
+
+      capturePhotoBtn.addEventListener("click", () => {
+        const context = cameraCanvas.getContext("2d");
+        const width = cameraPreview.videoWidth;
+        const height = cameraPreview.videoHeight;
+        const framePadding = 40;
+        const frameHeight = height + framePadding * 2;
+        cameraCanvas.width = width + framePadding * 2;
+        cameraCanvas.height = frameHeight;
+
+        // Draw polaroid frame background
+        context.fillStyle = "#fff";
+        context.fillRect(0, 0, cameraCanvas.width, cameraCanvas.height);
+        context.fillStyle = "rgba(0, 0, 0, 0.05)";
+        context.fillRect(
+          framePadding / 2,
+          framePadding / 2,
+          width + framePadding,
+          height + framePadding
+        );
+
+        // Draw the captured image
+        context.drawImage(
+          cameraPreview,
+          framePadding,
+          framePadding,
+          width,
+          height
+        );
+
+        // Draw decorative frame elements
+        context.fillStyle = "rgba(255, 140, 107, 0.3)";
+        context.fillRect(0, 0, cameraCanvas.width, framePadding / 2);
+        context.fillRect(
+          0,
+          frameHeight - framePadding / 2,
+          cameraCanvas.width,
+          framePadding / 2
+        );
+        context.fillRect(0, 0, framePadding / 2, frameHeight);
+        context.fillRect(
+          cameraCanvas.width - framePadding / 2,
+          0,
+          framePadding / 2,
+          frameHeight
+        );
+
+        // Add top text with emojis
+        context.font = "bold 30px 'Dancing Script'";
+        context.fillStyle = "#fff";
+        context.shadowColor = "black";
+        context.shadowBlur = 10;
+        context.textAlign = "center";
+        context.fillText(
+          "🌸 KKN 05 KALIABU 💖",
+          cameraCanvas.width / 2,
+          framePadding / 2 + 20
+        );
+
+        // Add bottom text
+        context.font = "bold 30px 'Dancing Script'";
+        context.fillText(
+          "Momen Abadi ✨",
+          cameraCanvas.width / 2,
+          frameHeight - framePadding / 2 - 10
+        );
+
+        const dataUrl = cameraCanvas.toDataURL("image/png");
+
+        // Add to gallery
+        const newItem = document.createElement("div");
+        newItem.className = "gallery-item";
+        const newImg = document.createElement("img");
+        newImg.src = dataUrl;
+        newImg.alt = "Kenangan Baru";
+        newItem.appendChild(newImg);
+        gallery.appendChild(newItem);
+
+        // Update gallery items and add click event
+        updateGalleryItems();
+        newImg.addEventListener(
+          "click",
+          openPhotoModal(galleryItems.length - 1)
+        );
+
+        closeCameraModal();
+      });
+
+      function closeCameraModal() {
+        cameraModal.style.display = "none";
+        if (stream) {
+          stream.getTracks().forEach((track) => track.stop());
+          stream = null;
+        }
+      }
+
+      cameraModal.addEventListener("click", (e) => {
+        if (e.target === cameraModal) closeCameraModal();
+      });
+
+      // Animations
+      gsap.from(".hero h1", {
+        y: 20,
+        opacity: 0,
+        duration: 1,
+        ease: "power3.out",
+      });
+      gsap.from(".hero p", { y: 16, opacity: 0, duration: 1, delay: 0.2 });
+      gsap.from(".audio-bar", { y: 16, opacity: 0, duration: 1, delay: 0.4 });
+      gsap.from(".panel .msg", {
+        stagger: 0.15,
+        y: 14,
+        opacity: 0,
+        duration: 0.8,
+        delay: 0.5,
+      });
+      gsap.from(".gallery-item", {
+        stagger: 0.12,
+        y: 20,
+        opacity: 0,
+        duration: 0.8,
+        delay: 0.6,
+      });
+    </script>
+  </body>
+</html>
